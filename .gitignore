@@ -1,0 +1,5 @@
+.classpath
+.project
+.settings/
+#the directory where maven will build things
+target/ 
