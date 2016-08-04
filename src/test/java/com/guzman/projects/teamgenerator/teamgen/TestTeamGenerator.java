@@ -14,8 +14,8 @@ public class TestTeamGenerator {
 	public void Test() throws Exception {
 		TeamGenerator team = new TeamGenerator();
 		team.loadEmployees("./src/main/resources/BeanBagTourneyPlayers.txt");
-		Assert.assertEquals(34, team.getUsers().size());
-		Assert.assertEquals(17, team.createTeams().size());
+		Assert.assertEquals(36, team.getUsers().size());
+		Assert.assertEquals(18, team.createTeams(2).size());
 	}
 
 	/**

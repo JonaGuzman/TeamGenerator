@@ -4,20 +4,19 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
-/**
- * A random team generator. 
- * Reads a file containing employees.
- * Generates a random 2 person team
- * @author Jonathan Guzman
- * 
- *
- */
+
+	/**
+	 * A random team generator. 
+	 * Reads a file containing employees. 
+	 * Generates a random 2 person team
+	 * @author Jonathan Guzman
+	 */
 public class TeamGenerator {
 
 	protected ArrayList<Employee> employees = new ArrayList<Employee>();
+
 	/**
-	 * Method that passes a file path
-	 * Reads file
+	 * Method that uses a file path to read a file
 	 * populates employee list
 	 * @param fileName of the employee file
 	 * @throws IOException
@@ -49,73 +48,88 @@ public class TeamGenerator {
 				in.close();
 		}
 	}
-
+	
 	/**
 	 * Getter for employees list
 	 * @return List of Employees
 	 */
-	public List<Employee> getUsers() {
-
-		return employees;
-	}
+	public List<Employee> getUsers() { return employees;}
 
 	/**
-	 * This is the main business logic which will organize
-	 * a list of employees into teams.
+	 * The main business logic 
+	 * organizes teams from list of members
+	 * @param teamSize size of the teams to be
 	 * @return a non null Collection of teams
 	 */
-	public Collection<Team> createTeams() {
+	public Collection<Team> createTeams(int teamSize) {
 
 		List<Team> teams = new ArrayList<>();
 		List<Integer> chosenEmployees = new ArrayList<>();
 		/**
-		 * Populate Team of two unique players
-		 * employees as team instance
+		 * Populate Team of two unique players employees as team instance
 		 */
-		int teamIndex = 1;
-		Team currentTeam = new Team();
-		for (int i = 0; i < employees.size(); i++) {
+		try {
+			int teamIndex = 1;
+			Team currentTeam = new Team();
+			for (int i = 0; i < employees.size(); i++) {
 
-			int teamCount = i % 2;
-			int seed;
+				int teamCount = i % teamSize;
+				int seed;
 
-			// continue to generate the seed to avoid duplicates
-			do {
-				seed = (int) (Math.random() * employees.size());
-			} while (chosenEmployees.contains(seed));
+				// continue to generate the seed to avoid duplicates
+				do {seed = (int) (Math.random() * employees.size());}
+				while (chosenEmployees.contains(seed));
 
-			// Reinitialized the team every time the teamCount is 0
-			if (i != 0 && teamCount == 0) {
-				// add the current team to list before reset
-				currentTeam.setTeamIndex(teamIndex++);
-				teams.add(currentTeam);
-				currentTeam = new Team();
+				// Reinitialized the team every time the teamCount is 0
+				if (i != 0 && teamCount == 0) {
+					// add the current team to list before reset
+					currentTeam.setTeamIndex(teamIndex++);
+					teams.add(currentTeam);
+					currentTeam = new Team();
+				}
+
+				Employee employee = employees.get(seed);
+				if (!chosenEmployees.contains(seed)) {
+					// track employee index and add to currentTeam
+					chosenEmployees.add(seed);
+					currentTeam.add(employee);
+				}
 			}
 
-			Employee employee = employees.get(seed);
-			if (!chosenEmployees.contains(seed)) {
-				// track employee index and add to currentTeam
-				chosenEmployees.add(seed);
-				currentTeam.add(employee);
-			}
+			// add the final team created
+			currentTeam.setTeamIndex(teamIndex++);
+			teams.add(currentTeam);
+			return teams;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
 		}
-
-		// add the final team created
-		currentTeam.setTeamIndex(teamIndex++);
-		teams.add(currentTeam);
-		return teams;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 * User passes in file path and team size
+	 * @return {@link Collection}
 	 * @throws IOException
 	 */
 	public Collection<Team> run() throws IOException {
 
-		loadEmployees("./src/main/resources/BeanBagTourneyPlayers.txt");
-		getUsers();
-		return createTeams();
+		Scanner input = null;
+		try {
+			System.out.println("Provide path to file containing members to be placed in teams\n");
+			input = new Scanner(System.in);
+			loadEmployees(input.next());
+			getUsers();
+			System.out.println("What is the size of the teams going to be?\n");
+			
+			return createTeams(input.nextInt());
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.getMessage();
+			return null;
+		} finally {
+			input.close();
+		}
 	}
 
 	public static void main(String[] args) throws IOException {
