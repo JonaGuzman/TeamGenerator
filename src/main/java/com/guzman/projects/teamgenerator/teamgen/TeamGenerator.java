@@ -111,16 +111,19 @@ public class TeamGenerator {
 	 * User passes in file path and team size
 	 * @return {@link Collection}
 	 * @throws IOException
+	 * TODO: put the user prompt in a different class
+	 * use args from the main as arguments maybe 
+	 * add in a print team
 	 */
 	public Collection<Team> run() throws IOException {
 
 		Scanner input = null;
 		try {
-			System.out.println("Provide path to file containing members to be placed in teams\n");
+			System.out.println("Filepath:\t");
 			input = new Scanner(System.in);
 			loadEmployees(input.next());
 			getUsers();
-			System.out.println("What is the size of the teams going to be?\n");
+			System.out.println("Members per Team:\t");
 			
 			return createTeams(input.nextInt());
 		} catch (Exception e) {
