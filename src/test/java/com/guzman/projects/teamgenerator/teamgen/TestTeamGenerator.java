@@ -13,7 +13,7 @@ public class TestTeamGenerator {
 	@Test
 	public void Test() throws Exception {
 		TeamGenerator team = new TeamGenerator();
-		team.loadEmployees("./src/main/resources/BeanBagTourneyPlayers.txt");
+		team.loadMembers("./src/main/resources/BeanBagTourneyPlayers.txt");
 		Assert.assertEquals(36, team.getUsers().size());
 		Assert.assertEquals(18, team.createTeams(2).size());
 	}

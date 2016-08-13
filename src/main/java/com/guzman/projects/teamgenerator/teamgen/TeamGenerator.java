@@ -8,38 +8,38 @@ import java.util.*;
 	/**
 	 * A random team generator. 
 	 * Reads a file containing employees. 
-	 * Generates a random 2 person team
+	 * Generates a random number of person team
 	 * @author Jonathan Guzman
 	 */
 public class TeamGenerator {
 
-	protected ArrayList<Employee> employees = new ArrayList<Employee>();
+	protected ArrayList<Member> members = new ArrayList<Member>();
 
 	/**
 	 * Method that uses a file path to read a file
-	 * populates employee list
-	 * @param fileName of the employee file
+	 * populates member list
+	 * @param fileName of the member file
 	 * @throws IOException
 	 */
-	public void loadEmployees(String fileName) throws IOException {
+	public void loadMembers(String fileName) throws IOException {
 
 		BufferedReader in = null;
 		try {
 			String name = null;
 			in = new BufferedReader(new FileReader(fileName));
 			while ((name = in.readLine()) != null) {
-				Employee emp = new Employee();
+				Member m = new Member();
 
 				String[] temp = name.split(" ");
 				if (name.contains(" ")) {
-					emp.setFirstName(temp[0]);
-					emp.setLastName(temp[1]);
+					m.setFirstName(temp[0]);
+					m.setLastName(temp[1]);
 				} else {
-					emp.setFirstName(temp[0]);
-					emp.setLastName("");
+					m.setFirstName(temp[0]);
+					m.setLastName("");
 				}
 
-				employees.add(emp);
+				members.add(m);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -50,10 +50,10 @@ public class TeamGenerator {
 	}
 	
 	/**
-	 * Getter for employees list
-	 * @return List of Employees
+	 * Getter for members list
+	 * @return List of Members
 	 */
-	public List<Employee> getUsers() { return employees;}
+	public List<Member> getUsers() { return members;}
 
 	/**
 	 * The main business logic 
@@ -64,21 +64,21 @@ public class TeamGenerator {
 	public Collection<Team> createTeams(int teamSize) {
 
 		List<Team> teams = new ArrayList<>();
-		List<Integer> chosenEmployees = new ArrayList<>();
+		List<Integer> chosenMembers = new ArrayList<>();
 		/**
-		 * Populate Team of two unique players employees as team instance
+		 * Populate Team of two unique members as team instance
 		 */
 		try {
 			int teamIndex = 1;
 			Team currentTeam = new Team();
-			for (int i = 0; i < employees.size(); i++) {
+			for (int i = 0; i < members.size(); i++) {
 
 				int teamCount = i % teamSize;
 				int seed;
 
 				// continue to generate the seed to avoid duplicates
-				do {seed = (int) (Math.random() * employees.size());}
-				while (chosenEmployees.contains(seed));
+				do {seed = (int) (Math.random() * members.size());}
+				while (chosenMembers.contains(seed));
 
 				// Reinitialized the team every time the teamCount is 0
 				if (i != 0 && teamCount == 0) {
@@ -88,10 +88,10 @@ public class TeamGenerator {
 					currentTeam = new Team();
 				}
 
-				Employee employee = employees.get(seed);
-				if (!chosenEmployees.contains(seed)) {
+				Member employee = members.get(seed);
+				if (!chosenMembers.contains(seed)) {
 					// track employee index and add to currentTeam
-					chosenEmployees.add(seed);
+					chosenMembers.add(seed);
 					currentTeam.add(employee);
 				}
 			}
@@ -121,7 +121,7 @@ public class TeamGenerator {
 		try {
 			System.out.println("Filepath:\t");
 			input = new Scanner(System.in);
-			loadEmployees(input.next());
+			loadMembers(input.next());
 			getUsers();
 			System.out.println("Members per Team:\t");
 			

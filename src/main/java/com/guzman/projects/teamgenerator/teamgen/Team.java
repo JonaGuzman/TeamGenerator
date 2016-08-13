@@ -4,25 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Team is a collection of <strong>employees</strong>
+ * Team is a collection of <strong>members</strong>
  * 
- * @see Employee 
+ * @see Member 
  */
 public class Team {
 	private int teamIndex;
-	private List<Employee> employees;
+	private List<Member> members;
 
 	public Team() {
-		this.employees = new ArrayList<>();
+		this.members = new ArrayList<>();
 	}
 
-	public void add(Employee emp) {
-			employees.add(emp);
+	public void add(Member mem) {
+			members.add(mem);
 	}
 
-	public Employee get(int i) {
+	public Member get(int i) {
 		//Returns a single employee from team
-		return employees.get(i);
+		return members.get(i);
 	}
 
 	public int getTeamIndex() {
@@ -39,7 +39,7 @@ public class Team {
 		builder.append("Team " + teamIndex)
 			.append(System.getProperty("line.separator"));
 		
-		for (Employee e : employees) {
+		for (Member e : members) {
 			builder.append(e).append(System.getProperty("line.separator"));
 		}
 		return builder.toString();

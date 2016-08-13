@@ -1,6 +1,6 @@
 package com.guzman.projects.teamgenerator.teamgen;
 
-public class Employee {
+public class Member {
 
 	private String firstName;
 	private String lastName;
