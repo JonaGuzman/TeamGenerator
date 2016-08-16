@@ -106,7 +106,7 @@ public class TeamGenerator {
 			return null;
 		}
 	}
-
+	
 	/**
 	 * User passes in file path and team size
 	 * @return {@link Collection}
@@ -115,7 +115,7 @@ public class TeamGenerator {
 	 * use args from the main as arguments maybe 
 	 * add in a print team
 	 */
-	public Collection<Team> run() throws IOException {
+	public Collection<Team> run(String arg1, String arg2) throws IOException {
 
 		Scanner input = null;
 		try {
@@ -137,7 +137,7 @@ public class TeamGenerator {
 
 	public static void main(String[] args) throws IOException {
 		TeamGenerator tg = new TeamGenerator();
-		for (Team t : tg.run()) {
+		for (Team t : tg.run(args[0], args[1])) {
 			System.out.println(t);
 		}
 	}
