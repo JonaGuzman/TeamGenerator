@@ -23,29 +23,23 @@ public class TeamGenerator {
 	 */
 	public void loadMembers(String fileName) throws IOException {
 
-		BufferedReader in = null;
-		try {
+		
+		try (BufferedReader in =  new BufferedReader(new FileReader(fileName))) {
+			
 			String name = null;
-			in = new BufferedReader(new FileReader(fileName));
+			
 			while ((name = in.readLine()) != null) {
-				Member m = new Member();
+				Member m = null;
 
 				String[] temp = name.split(" ");
 				if (name.contains(" ")) {
-					m.setFirstName(temp[0]);
-					m.setLastName(temp[1]);
+					m = new Member(temp[0],temp[1]);
 				} else {
-					m.setFirstName(temp[0]);
-					m.setLastName("");
+					m = new Member(temp[0],"");
 				}
 
 				members.add(m);
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (in != null)
-				in.close();
 		}
 	}
 	
@@ -117,27 +111,30 @@ public class TeamGenerator {
 	 */
 	public Collection<Team> run(String arg1, String arg2) throws IOException {
 
-		Scanner input = null;
+		Collection <Team> teams = null;
+		
 		try {
-			System.out.println("Filepath:\t");
-			input = new Scanner(System.in);
-			loadMembers(input.next());
-			getUsers();
-			System.out.println("Members per Team:\t");
+			loadMembers(arg1);
 			
-			return createTeams(input.nextInt());
+			getUsers();
+			
+			teams = createTeams(Integer.parseInt(arg2));
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.getMessage();
-			return null;
-		} finally {
-			input.close();
-		}
+		} 
+		
+		return teams;
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception{
+		
+		if(args.length != 2)
+			throw new Exception("Need to pass in file path and team size");
+		
 		TeamGenerator tg = new TeamGenerator();
-		for (Team t : tg.run(args[0], args[1])) {
+		
+		Collection<Team> listOfTeams = tg.run(args[0], args[1]);
+		for (Team t : listOfTeams ) {
 			System.out.println(t);
 		}
 	}
