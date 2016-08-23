@@ -21,13 +21,14 @@ public class TestTeamGenerator {
 	/**
 	 * Ensure each team has a unique members: members cannot have the same first
 	 * and last name
+	 * @throws Exception 
 	 */
 	@Test
-	public void testUniqueMembers() {
+	public void testUniqueMembers() throws Exception {
 		TeamGenerator teamGen = new TeamGenerator();
-		/*
-		 * teamGen.loadEmployees(""); for(Team t : teamGen.createTeams()) {
-		 * Assert.assertNotEquals(t.get(0), t.get(1)); }
-		 */
+		
+		  teamGen.loadMembers("./src/main/resources/Members.txt"); for(Team t : teamGen.createTeams(3)) {
+		  Assert.assertNotEquals(t.get(0), t.get(1)); }
+		
 	}
 }

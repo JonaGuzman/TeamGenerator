@@ -5,6 +5,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
+import org.apache.log4j.Logger;
+
+
 	/**
 	 * A random team generator. 
 	 * Reads a file containing employees. 
@@ -127,7 +130,8 @@ public class TeamGenerator {
 	}
 
 	public static void main(String[] args) throws Exception{
-		
+	Logger logger = Logger.getLogger(TeamGenerator.class.getName());
+
 		if(args.length != 2)
 			throw new Exception("Need to pass in file path and team size");
 		
@@ -135,7 +139,7 @@ public class TeamGenerator {
 		
 		Collection<Team> listOfTeams = tg.run(args[0], args[1]);
 		for (Team t : listOfTeams ) {
-			System.out.println(t);
+			logger.info(t);
 		}
 	}
 }
