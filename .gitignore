@@ -1,6 +1,7 @@
 .classpath
 .project
 .settings/
+./src/main/resources/log.out
 #the directory where maven will build things
 target/ 
 /target/
