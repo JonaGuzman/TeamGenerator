@@ -2,7 +2,7 @@ package com.guzman.projects.teamgenerator.teamgen;
 
 import java.io.IOException;
 
-import org.junit.Assert;
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 /**
@@ -10,12 +10,14 @@ import org.junit.Test;
  */
 public class TestTeamGenerator {
 
+	TeamGenerator team = new TeamGenerator();
+
 	@Test
 	public void Test() throws Exception {
-		TeamGenerator team = new TeamGenerator();
 		team.loadMembers("./src/main/resources/Members.txt");
-		Assert.assertEquals(36, team.getUsers().size());
-		Assert.assertEquals(18, team.createTeams(2).size());
+		
+		assertEquals(36, team.getUsers().size());
+		assertEquals(18, team.createTeams(2).size());
 	}
 
 	/**
@@ -24,11 +26,10 @@ public class TestTeamGenerator {
 	 * @throws Exception 
 	 */
 	@Test
-	public void testUniqueMembers() throws Exception {
-		TeamGenerator teamGen = new TeamGenerator();
-		
-		  teamGen.loadMembers("./src/main/resources/Members.txt"); for(Team t : teamGen.createTeams(3)) {
-		  Assert.assertNotEquals(t.get(0), t.get(1)); }
-		
+	public void testUniqueMembers() throws Exception {	
+		  team.loadMembers("./src/main/resources/Members.txt"); 
+		  
+		  for(Team t : team.createTeams(3))
+			  assertNotEquals(t.get(0), t.get(1)); 
 	}
 }
