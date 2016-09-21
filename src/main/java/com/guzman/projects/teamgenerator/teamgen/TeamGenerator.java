@@ -80,6 +80,7 @@ public class TeamGenerator {
 				if (i != 0 && teamCount == 0) {
 					// add the current team to list before reset
 					currentTeam.setTeamIndex(teamIndex++);
+					sort(currentTeam);
 					teams.add(currentTeam);
 					currentTeam = new Team();
 				}
@@ -92,8 +93,9 @@ public class TeamGenerator {
 				}
 			}
 
-			// add the final team created
+			// add + sort the final team created
 			currentTeam.setTeamIndex(teamIndex++);
+			sort(currentTeam);
 			teams.add(currentTeam);
 			return teams;
 		} catch (Exception e) {
@@ -131,34 +133,24 @@ public class TeamGenerator {
 	
 	/**
 	 * Sort members of a team alphabetically
-	 * 
+	 * @param single team
 	 */
-	public void sortTeamMembers(Collection<Team> teams) {
+	public void sort(Team team) {
 
-		for (Team team : teams) {
+		Member temp;
+		for (int prev = 0; prev < team.size() - 1; prev++) {
 
-			Member tempMember = null;
-			for (int prevElm = 0; prevElm < team.size(); prevElm++) {
-
-				for (int nextElm = 1; nextElm < team.size() - 1; nextElm++) {
-
-					if (team.get(nextElm - 1).toString().compareToIgnoreCase(team.get(nextElm).toString()) < 0) {
-						tempMember = team.get(nextElm - 1);
-						
-						team.set(nextElm - 1, team.get(nextElm));
-						team.set(nextElm, tempMember);
-					}
+			for (int next = 1; next < team.size() - prev; next++) {
+				if (team.get(next - 1).toString().compareToIgnoreCase(team.get(next).toString()) > 0) {
+					
+					temp = team.get(next - 1);
+					team.set(next - 1, team.get(next));
+					team.set(next, temp);
 				}
 			}
 		}
 	}
 	
-/*	if(intArray[j-1] > intArray[j]){
-        //swap the elements!
-        temp = intArray[j-1];
-        intArray[j-1] = intArray[j];
-        intArray[j] = temp;
-}*/
 	public static void main(String[] args) throws Exception{
 	Logger logger = Logger.getLogger(TeamGenerator.class.getName());
 
