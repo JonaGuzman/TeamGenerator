@@ -24,6 +24,12 @@ public class Team {
 		//Returns a single employee from team
 		return members.get(i);
 	}
+	
+	public void set(int index, Member member) {
+		if (index >= members.size())
+            throw new IndexOutOfBoundsException("invalid index:" + (index));
+		members.set(index, member);
+	}
 
 	public int getTeamIndex() {
 		return teamIndex;
@@ -31,6 +37,10 @@ public class Team {
 
 	public void setTeamIndex(int teamIndex) {
 		this.teamIndex = teamIndex;
+	}
+	
+	public int size() {
+		return members.size();
 	}
 
 	public String toString() {

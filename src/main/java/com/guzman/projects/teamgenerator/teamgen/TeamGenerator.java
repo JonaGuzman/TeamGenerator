@@ -7,7 +7,6 @@ import java.util.*;
 
 import org.apache.log4j.Logger;
 
-
 	/**
 	 * A random team generator. 
 	 * Reads a file containing employees. 
@@ -104,12 +103,13 @@ public class TeamGenerator {
 		}
 	}
 	
+	
 	/**
 	 * User passes in file path and team size
 	 * @return {@link Collection}
 	 * @throws IOException
-	 * TODO: put the user prompt in a different class
-	 * use args from the main as arguments maybe 
+	 * @param path to file of members and team size
+	 * TODO: put the user prompt in a different class 
 	 * add in a print team
 	 */
 	public Collection<Team> run(String arg1, String arg2) throws IOException {
@@ -128,7 +128,37 @@ public class TeamGenerator {
 		
 		return teams;
 	}
+	
+	/**
+	 * Sort members of a team alphabetically
+	 * 
+	 */
+	public void sortTeamMembers(Collection<Team> teams) {
 
+		for (Team team : teams) {
+
+			Member tempMember = null;
+			for (int prevElm = 0; prevElm < team.size(); prevElm++) {
+
+				for (int nextElm = 1; nextElm < team.size() - 1; nextElm++) {
+
+					if (team.get(nextElm - 1).toString().compareToIgnoreCase(team.get(nextElm).toString()) < 0) {
+						tempMember = team.get(nextElm - 1);
+						
+						team.set(nextElm - 1, team.get(nextElm));
+						team.set(nextElm, tempMember);
+					}
+				}
+			}
+		}
+	}
+	
+/*	if(intArray[j-1] > intArray[j]){
+        //swap the elements!
+        temp = intArray[j-1];
+        intArray[j-1] = intArray[j];
+        intArray[j] = temp;
+}*/
 	public static void main(String[] args) throws Exception{
 	Logger logger = Logger.getLogger(TeamGenerator.class.getName());
 
@@ -140,6 +170,7 @@ public class TeamGenerator {
 		Collection<Team> listOfTeams = tg.run(args[0], args[1]);
 		for (Team t : listOfTeams ) {
 			logger.info(t);
+			System.out.println(t.toString());
 		}
 	}
 }
