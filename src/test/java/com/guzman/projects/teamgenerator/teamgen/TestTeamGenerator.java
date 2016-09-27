@@ -1,7 +1,6 @@
 package com.guzman.projects.teamgenerator.teamgen;
 
-import java.io.IOException;
-
+import java.util.Collection;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
@@ -20,6 +19,23 @@ public class TestTeamGenerator {
 		assertEquals(18, team.createTeams(2).size());
 	}
 
+	/**
+	 * small test for sort, 
+	 * first element is always < second element
+	 * @throws Exception
+	 */
+	@Test
+	public void testTeamSize() throws Exception {
+		team.loadMembers("./src/main/resources/Members.txt");
+		
+		Collection<Team> teams = team.createTeams(2);
+		
+		for(Team t : teams) {
+			team.sort(t);
+			assertTrue(t.get(0).toString().compareToIgnoreCase(t.get(1).toString()) > 0);
+		}
+	}
+	
 	/**
 	 * Ensure each team has a unique members: members cannot have the same first
 	 * and last name
