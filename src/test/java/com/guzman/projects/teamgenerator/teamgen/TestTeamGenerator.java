@@ -25,14 +25,22 @@ public class TestTeamGenerator {
 	 * @throws Exception
 	 */
 	@Test
-	public void testTeamSize() throws Exception {
+	public void testTeamSort() throws Exception {
 		team.loadMembers("./src/main/resources/Members.txt");
 		
-		Collection<Team> teams = team.createTeams(2);
+		Collection<Team> teams = team.createTeams(6);
 		
 		for(Team t : teams) {
 			team.sort(t);
-			assertTrue(t.get(0).toString().compareToIgnoreCase(t.get(1).toString()) > 0);
+			
+			int first = 0;
+			int second = 1;
+			
+			while(first < t.size() && second < t.size()) {
+				assertTrue(t.get(first).toString().compareToIgnoreCase(t.get(second).toString()) < 0);
+				first++;
+				second++;
+			}
 		}
 	}
 	
