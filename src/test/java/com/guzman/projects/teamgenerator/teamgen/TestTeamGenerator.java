@@ -1,6 +1,5 @@
 package com.guzman.projects.teamgenerator.teamgen;
 
-import java.util.Collection;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
@@ -17,31 +16,6 @@ public class TestTeamGenerator {
 		
 		assertEquals(36, team.getUsers().size());
 		assertEquals(18, team.createTeams(2).size());
-	}
-
-	/**
-	 * small test for sort, 
-	 * first element is always < second element
-	 * @throws Exception
-	 */
-	@Test
-	public void testTeamSort() throws Exception {
-		team.loadMembers("./src/main/resources/Members.txt");
-		
-		Collection<Team> teams = team.createTeams(6);
-		
-		for(Team t : teams) {
-			team.sort(t);
-			
-			int first = 0;
-			int second = 1;
-			
-			while(first < t.size() && second < t.size()) {
-				assertTrue(t.get(first).toString().compareToIgnoreCase(t.get(second).toString()) < 0);
-				first++;
-				second++;
-			}
-		}
 	}
 	
 	/**

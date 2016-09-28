@@ -70,17 +70,15 @@ public class TeamGenerator {
 			for (int i = 0; i < members.size(); i++) {
 
 				int teamCount = i % teamSize;
-				int seed;
-
-				// continue to generate the seed to avoid duplicates
-				do {seed = (int) (Math.random() * members.size());}
-				while (chosenMembers.contains(seed));
+				int seed = generateSeed(chosenMembers);
 
 				// Reinitialized the team every time the teamCount is 0
 				if (i != 0 && teamCount == 0) {
 					// add the current team to list before reset
 					currentTeam.setTeamIndex(teamIndex++);
-					sort(currentTeam);
+					
+					Collections.sort((List<Member>) currentTeam, new MemberComparator());
+					
 					teams.add(currentTeam);
 					currentTeam = new Team();
 				}
@@ -95,8 +93,11 @@ public class TeamGenerator {
 
 			// add + sort the final team created
 			currentTeam.setTeamIndex(teamIndex++);
-			sort(currentTeam);
+			
+			Collections.sort((List<Member>) currentTeam, new MemberComparator());
+
 			teams.add(currentTeam);
+	
 			return teams;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -105,6 +106,14 @@ public class TeamGenerator {
 		}
 	}
 	
+	private int generateSeed(List<Integer> chosenMembers) {
+		int seed;
+		
+		// continue to generate the seed to avoid duplicates
+		do {seed = (int) (Math.random() * members.size());}
+		while (chosenMembers.contains(seed));
+		return seed;
+	}
 	
 	/**
 	 * User passes in file path and team size
@@ -129,26 +138,6 @@ public class TeamGenerator {
 		} 
 		
 		return teams;
-	}
-	
-	/**
-	 * Sort members of a team alphabetically
-	 * @param single team
-	 */
-	public void sort(Team team) {
-
-		Member temp;
-		for (int prev = 0; prev < team.size() - 1; prev++) {
-
-			for (int next = 1; next < team.size() - prev; next++) {
-				if (team.get(next - 1).toString().compareToIgnoreCase(team.get(next).toString()) > 0) {
-					
-					temp = team.get(next - 1);
-					team.set(next - 1, team.get(next));
-					team.set(next, temp);
-				}
-			}
-		}
 	}
 	
 	public static void main(String[] args) throws Exception{
