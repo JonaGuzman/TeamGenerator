@@ -28,19 +28,24 @@ public class TeamGenerator {
 		
 		try (BufferedReader in =  new BufferedReader(new FileReader(fileName))) {
 			
-			String name = null;
+			int count = 0;
+			String name = null; 
 			
 			while ((name = in.readLine()) != null) {
 				Member m = null;
+				
+				if(count++ == 0)
+					continue;	
 
-				String[] temp = name.split(" ");
-				if (name.contains(" ")) {
+				String[] temp = name.split(",");
+				if (name.contains(",")) {
 					m = new Member(temp[0],temp[1]);
 				} else {
 					m = new Member(temp[0],"");
 				}
 
 				members.add(m);
+				count++;
 			}
 		}
 	}
