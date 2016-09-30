@@ -88,11 +88,11 @@ public class TeamGenerator {
 					currentTeam = new Team();
 				}
 
-				Member employee = members.get(seed);
+				Member member = members.get(seed);
 				if (!chosenMembers.contains(seed)) {
-					// track employee index and add to currentTeam
+					// track member index and add to currentTeam
 					chosenMembers.add(seed);
-					currentTeam.add(employee);
+					currentTeam.add(member);
 				}
 			}
 

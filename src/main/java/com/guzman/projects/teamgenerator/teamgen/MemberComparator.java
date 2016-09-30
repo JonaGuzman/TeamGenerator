@@ -10,6 +10,7 @@ public class MemberComparator implements Comparator<Member> {
 
 	@Override
 	public int compare(Member o1, Member o2) {
-		return o1.getFirstName().compareToIgnoreCase(o2.getFirstName());
+		return (o1.getFirstName() + " " + o1.getLastName())
+				.compareToIgnoreCase(o2.getFirstName() + " " + o2.getLastName());
 	}
 }
