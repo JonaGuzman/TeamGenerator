@@ -25,32 +25,42 @@ public class TeamGenerator {
 	 */
 	public void loadMembers(String fileName) throws IOException {
 
-		
-		try (BufferedReader in =  new BufferedReader(new FileReader(fileName))) {
-			
-			int count = 0;
-			String name = null; 
-			
-			while ((name = in.readLine()) != null) {
-				Member m = null;
-				
-				if(count++ == 0)
-					continue;	
+		if (fileName.endsWith(".csv")) {
+			try (BufferedReader in = new BufferedReader(new FileReader(fileName))) {
 
-				String[] temp = name.split(",");
-				if (name.contains(",")) {
-					m = new Member(temp[0],temp[1]);
-				} else {
-					m = new Member(temp[0],"");
+				int count = 0;
+				String name = null;
+
+				while ((name = in.readLine()) != null) {
+					Member m = null;
+
+					if (count++ == 0)
+						continue;
+
+					String[] temp = name.split(",");
+					if (name.contains(",")) {
+						m = new Member(temp[0], temp[1]);
+					} else {
+						m = new Member(temp[0], "");
+					}
+
+					members.add(m);
+					count++;
 				}
-
-				members.add(m);
-				count++;
 			}
-		}
+		} else if (fileName.endsWith(".xlsx")) {
+
+			//TODO: implement database stuff
+			// h2
+			// jdbc
+			// logic will be similar just with db
+			
+		} else
+			System.out.print("invalid file type");
 	}
 	
 	/**
+	 * TODO: API conflict, need to redesign method
 	 * Getter for members list
 	 * @return List of Members
 	 */
@@ -105,7 +115,6 @@ public class TeamGenerator {
 	
 			return teams;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
