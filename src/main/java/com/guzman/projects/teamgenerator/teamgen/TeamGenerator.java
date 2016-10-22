@@ -1,11 +1,11 @@
 package com.guzman.projects.teamgenerator.teamgen;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
 import org.apache.log4j.Logger;
+
+import com.guzman.projects.teamgenerator.teamgen.dao.DaoFactory;
 
 	/**
 	 * A random team generator. 
@@ -16,55 +16,6 @@ import org.apache.log4j.Logger;
 public class TeamGenerator {
 
 	protected ArrayList<Member> members = new ArrayList<Member>();
-
-	/**
-	 * Method that uses a file path to read a file
-	 * populates member list
-	 * @param fileName of the member file
-	 * @throws IOException
-	 */
-	public void loadMembers(String fileName) throws IOException {
-
-		if (fileName.endsWith(".csv")) {
-			try (BufferedReader in = new BufferedReader(new FileReader(fileName))) {
-
-				int count = 0;
-				String name = null;
-
-				while ((name = in.readLine()) != null) {
-					Member m = null;
-
-					if (count++ == 0)
-						continue;
-
-					String[] temp = name.split(",");
-					if (name.contains(",")) {
-						m = new Member(temp[0], temp[1]);
-					} else {
-						m = new Member(temp[0], "");
-					}
-
-					members.add(m);
-					count++;
-				}
-			}
-		} else if (fileName.endsWith(".xlsx")) {
-
-			//TODO: implement database stuff
-			// h2
-			// jdbc
-			// logic will be similar just with db
-			
-		} else
-			System.out.print("invalid file type");
-	}
-	
-	/**
-	 * TODO: API conflict, need to redesign method
-	 * Getter for members list
-	 * @return List of Members
-	 */
-	public List<Member> getUsers() { return members;}
 
 	/**
 	 * The main business logic 
@@ -142,9 +93,9 @@ public class TeamGenerator {
 		Collection <Team> teams = null;
 		
 		try {
-			loadMembers(arg1);
+			DaoFactory daoObject = new DaoFactory();
 			
-			getUsers();
+			members = (ArrayList<Member>) daoObject.getDao(arg1).getUsers();
 			
 			teams = createTeams(Integer.parseInt(arg2));
 		} catch (Exception e) {
