@@ -21,25 +21,26 @@ public class TeamGeneratorDbDao implements IDataObjectModel {
 	File outDb;
 	String dbPath;
 
+	Member member;
 	List<Member> members;
 
-	// TODO: need to get the Business logic out of constructor
 	public TeamGeneratorDbDao(String xlsxFileName) {
+		file = new File(xlsxFileName);
+	}
 
-		Member member;
+	@Override
+	public List<Member> getUsers() {
 		members = new ArrayList<Member>();
 
-		String query = "select * from members";
-
 		try {
-			file = new File(xlsxFileName);
 
 			new File(dbPath = "./target/db/").mkdir();
 			outDb = new File(dbPath + "members");
+
 			List<ITable> tables = Spreadbase.analyze(file);
 
 			Spreadbase.write(file, new File(dbPath));
-			
+
 			File sqlOut = new File(dbPath, BuilderUtil.fileAsSqlFile(file).getName());
 
 			TableDefinitionWriter w = new TableDefinitionWriter(sqlOut, new DataDefinitionBuilder());
@@ -53,7 +54,7 @@ public class TeamGeneratorDbDao implements IDataObjectModel {
 
 			Statement stmt = conn.createStatement();
 
-			ResultSet rs = stmt.executeQuery(query);
+			ResultSet rs = stmt.executeQuery("select * from members");
 
 			while (rs.next()) {
 				member = new Member(rs.getString(1), rs.getString(2));
@@ -63,10 +64,6 @@ public class TeamGeneratorDbDao implements IDataObjectModel {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public List<Member> getUsers() {
 		return members;
 	}
 }

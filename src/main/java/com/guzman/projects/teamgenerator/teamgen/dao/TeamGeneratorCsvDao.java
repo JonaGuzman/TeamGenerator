@@ -7,20 +7,24 @@ import com.guzman.projects.teamgenerator.teamgen.Member;
 
 public class TeamGeneratorCsvDao implements IDataObjectModel {
 
-	File file;
+	String filePath;
+
+	Member m;
 	List<Member> members;
 
-	// TODO: need to get the Business logic out of constructor
-	public TeamGeneratorCsvDao(String csvFileName) throws Exception {
+	public TeamGeneratorCsvDao(String csvFileName) {
+		filePath = csvFileName;
+	}
 
+	private void readCsvFile() throws Exception {
 		members = new ArrayList<Member>();
-		try (BufferedReader in = new BufferedReader(new FileReader(csvFileName))) {
+
+		try (BufferedReader in = new BufferedReader(new FileReader(filePath))) {
 
 			int count = 0;
 			String name = null;
 
 			while ((name = in.readLine()) != null) {
-				Member m = null;
 
 				if (count++ == 0)
 					continue;
@@ -40,7 +44,11 @@ public class TeamGeneratorCsvDao implements IDataObjectModel {
 
 	@Override
 	public List<Member> getUsers() {
+		try {
+			readCsvFile();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return members;
 	}
-
 }

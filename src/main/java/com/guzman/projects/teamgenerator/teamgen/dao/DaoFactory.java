@@ -12,14 +12,13 @@ public class DaoFactory {
 	public IDataObjectModel getDao(String filePath) throws Exception {
 
 		switch (filePath.substring(filePath.lastIndexOf('.'))) {
-		case ".csv":
-			return new TeamGeneratorCsvDao(filePath);
-		case ".xlsx":
-			return new TeamGeneratorDbDao(filePath);
-		default:
-			Logger.getLogger(TeamGenerator.class.getName()).severe("invalid file type");
-			return null;
+			case ".csv":
+				return new TeamGeneratorCsvDao(filePath);
+			case ".xlsx":
+				return new TeamGeneratorDbDao(filePath);
+			default:
+				Logger.getLogger(TeamGenerator.class.getName()).severe("invalid file type");
+				return null;
 		}
-
 	}
 }
