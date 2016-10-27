@@ -10,6 +10,7 @@ public class TeamGeneratorCsvDao implements IDataObjectModel {
 	File file;
 	List<Member> members;
 
+	// TODO: need to get the Business logic out of constructor
 	public TeamGeneratorCsvDao(String csvFileName) throws Exception {
 
 		members = new ArrayList<Member>();

@@ -15,7 +15,6 @@ import com.flores.h2.spreadbase.model.impl.h2.DataDefinitionBuilder;
 import com.flores.h2.spreadbase.util.BuilderUtil;
 import com.guzman.projects.teamgenerator.teamgen.Member;
 
-//TODO: remove comments with questions
 public class TeamGeneratorDbDao implements IDataObjectModel {
 
 	File file;
@@ -24,6 +23,7 @@ public class TeamGeneratorDbDao implements IDataObjectModel {
 
 	List<Member> members;
 
+	// TODO: need to get the Business logic out of constructor
 	public TeamGeneratorDbDao(String xlsxFileName) {
 
 		Member member;
@@ -38,23 +38,17 @@ public class TeamGeneratorDbDao implements IDataObjectModel {
 			outDb = new File(dbPath + "members");
 			List<ITable> tables = Spreadbase.analyze(file);
 
-			//this writes the h2 file?
 			Spreadbase.write(file, new File(dbPath));
 			
-			//why do we need the .sql file? is that how the 
 			File sqlOut = new File(dbPath, BuilderUtil.fileAsSqlFile(file).getName());
 
-			// write the definitions from analysis, whats an h2 definition
 			TableDefinitionWriter w = new TableDefinitionWriter(sqlOut, new DataDefinitionBuilder());
 
 			w.write(tables);
 			w.close();
 
-			// dont know what that MV stuff and file lock are
 			Connection conn = DriverManager.getConnection("jdbc:h2:" + outDb + ";MV_STORE=FALSE;FILE_LOCK=NO");
 
-			// run the output script of the table definition process
-			// didnt get why i had to use this.
 			RunScript.execute(conn, new InputStreamReader(new FileInputStream(sqlOut)));
 
 			Statement stmt = conn.createStatement();
@@ -62,7 +56,6 @@ public class TeamGeneratorDbDao implements IDataObjectModel {
 			ResultSet rs = stmt.executeQuery(query);
 
 			while (rs.next()) {
-				// columns are 1 based?
 				member = new Member(rs.getString(1), rs.getString(2));
 				members.add(member);
 			}

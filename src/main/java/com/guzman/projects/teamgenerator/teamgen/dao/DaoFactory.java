@@ -6,19 +6,20 @@ import com.guzman.projects.teamgenerator.teamgen.TeamGenerator;
 
 public class DaoFactory {
 
-	public DaoFactory() { }
-	
+	public DaoFactory() {
+	}
+
 	public IDataObjectModel getDao(String filePath) throws Exception {
 
-		if (filePath.endsWith(".csv"))
+		switch (filePath.substring(filePath.lastIndexOf('.'))) {
+		case ".csv":
 			return new TeamGeneratorCsvDao(filePath);
-
-		else if (filePath.endsWith(".xlsx"))
+		case ".xlsx":
 			return new TeamGeneratorDbDao(filePath);
-
-		else {
+		default:
 			Logger.getLogger(TeamGenerator.class.getName()).severe("invalid file type");
 			return null;
 		}
+
 	}
 }
