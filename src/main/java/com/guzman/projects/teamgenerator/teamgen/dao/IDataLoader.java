@@ -4,7 +4,7 @@ import java.util.*;
 
 import com.guzman.projects.teamgenerator.teamgen.Member;
 
-public interface IDataObjectModel {
+public interface IDataLoader {
 	
 	public List<Member> getUsers();
 	

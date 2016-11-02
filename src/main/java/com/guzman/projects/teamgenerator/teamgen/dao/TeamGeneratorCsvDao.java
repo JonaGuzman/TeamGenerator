@@ -5,7 +5,7 @@ import java.util.*;
 
 import com.guzman.projects.teamgenerator.teamgen.Member;
 
-public class TeamGeneratorCsvDao implements IDataObjectModel {
+public class TeamGeneratorCsvDao implements IDataLoader {
 
 	String filePath;
 

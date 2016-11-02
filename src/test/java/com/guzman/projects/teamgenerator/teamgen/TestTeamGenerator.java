@@ -3,10 +3,13 @@ package com.guzman.projects.teamgenerator.teamgen;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
+
+import com.guzman.projects.teamgenerator.teamgen.dao.DaoFactory;
 
 /**
  * Unit test for simple App.
@@ -17,27 +20,24 @@ public class TestTeamGenerator {
 	 * TODO: need to create new unit tests due to redesign
 	 */
 	TeamGenerator team = new TeamGenerator();
+	DaoFactory daoObject = new DaoFactory();
+	List<Member> members = new ArrayList<Member>();
 
 	@Test
 	public void Test() throws Exception {
-//		team.loadMembers("./src/main/resources/members.csv");
-//		
-//		assertEquals(52, team.getUsers().size());
-//		assertEquals(26, team.createTeams(2).size());
+		assertEquals(26, team.createTeams("./src/main/resources/members.csv", 2).size());
 	}
 
 	/**
-	 * Ensure each team has a unique members:
-	 * members cannot have the same name
+	 * Ensure each team has a unique members: members cannot have the same name
 	 * @throws Exception
 	 */
 	@Test
 	public void testUniqueMembers() throws Exception {
-//		team.loadMembers("./src/main/resources/members.csv");
-//		
-//		//got indexoutOFBounds When TeamSize == 3
-//		for (Team t : team.createTeams(4))
-//			assertNotEquals(t.get(0), t.get(1));
+	
+		//got indexoutOFBounds When TeamSize == 3
+		// for (Team t : team.createTeams(4))
+		// assertNotEquals(t.get(0), t.get(1));
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class TestTeamGenerator {
 	@Test
 	public void testLastNameSort() {
 		ArrayList<Member> team = new ArrayList<Member>();
-		
+
 		Member m1 = new Member("Jak", "Mack");
 		Member m2 = new Member("Jak", "Guzman");
 

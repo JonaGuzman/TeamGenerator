@@ -9,7 +9,7 @@ public class DaoFactory {
 	public DaoFactory() {
 	}
 
-	public IDataObjectModel getDao(String filePath) throws Exception {
+	public static IDataLoader getDao(String filePath) throws Exception {
 
 		switch (filePath.substring(filePath.lastIndexOf('.'))) {
 			case ".csv":
