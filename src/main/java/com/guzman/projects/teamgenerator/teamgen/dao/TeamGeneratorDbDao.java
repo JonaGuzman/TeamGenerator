@@ -9,7 +9,6 @@ import com.guzman.projects.teamgenerator.teamgen.Member;
 public class TeamGeneratorDbDao implements IDataLoader {
 
 	File file;
-	File outDb;
 	String dbPath;
 
 	Member member;
@@ -19,6 +18,7 @@ public class TeamGeneratorDbDao implements IDataLoader {
 	
 	public TeamGeneratorDbDao(String xlsxFileName) throws Exception {
 		Spreadbase.asDataSource(new File(xlsxFileName));
+		dbPath = xlsxFileName.substring(0, xlsxFileName.lastIndexOf('.'));
 	}
 
 	@Override
@@ -26,10 +26,9 @@ public class TeamGeneratorDbDao implements IDataLoader {
 		members = new ArrayList<Member>();
 
 		try {
-			new File(dbPath = "./target/db/").mkdir();
-			outDb = new File(dbPath + "members");
 
-			Connection conn = DriverManager.getConnection("jdbc:h2:" + outDb + ";MV_STORE=FALSE;FILE_LOCK=NO");
+			//how do i opt to not have the db files in resource
+			Connection conn = DriverManager.getConnection("jdbc:h2:" + dbPath + ";MV_STORE=FALSE;FILE_LOCK=NO", "sa", "");
 
 			Statement stmt = conn.createStatement();
 
