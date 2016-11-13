@@ -4,7 +4,7 @@ import java.util.Comparator;
 /**
  * 
  * @author Jonathan Guzman
- *
+ * 
  */
 public class MemberComparator implements Comparator<Member> {
 

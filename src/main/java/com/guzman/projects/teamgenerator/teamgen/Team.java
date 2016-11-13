@@ -6,6 +6,8 @@ import java.util.ArrayList;
  * Team is a collection of <strong>members</strong>
  * 
  * @see Member 
+ * 
+ * @author Jonathan Guzman
  */
 public class Team extends ArrayList<Member> {
 	private static final long serialVersionUID = 1L;

@@ -4,6 +4,8 @@
 /src/main/resources/log.out
 /src/main/resources/*.h2*
 /src/main/resources/*.sql
+/src/main/resources/*.trace*
+/src/main/resources/*db*
 #the directory where maven will build things
 target/ 
 /target/

@@ -1,25 +1,24 @@
 package com.guzman.projects.teamgenerator.teamgen;
 
-import java.io.IOException;
 import java.util.*;
-
 import org.apache.log4j.Logger;
-
-import com.guzman.projects.teamgenerator.teamgen.dao.DaoFactory;
+import com.guzman.projects.teamgenerator.teamgen.dao.*;
 
 /**
- * A random team generator. Reads a file containing employees. Generates a
- * random number of person team
+ * Randomly generates members into teams
  * 
  * @author Jonathan Guzman
  */
 public class TeamGenerator {
 
+	private IDataLoader daoLoader;
+
 	/**
 	 * The main business logic organizes teams from list of members
 	 * 
-	 * @param teamSize
-	 *            size of the teams to be
+	 * @param filePath path to csv or xlsx
+	 * @param teamSize size of the teams
+	 * 
 	 * @return a non null Collection of teams
 	 */
 	public List<Team> createTeams(String filePath, int teamSize) {
@@ -29,13 +28,14 @@ public class TeamGenerator {
 		List<Member> members = new ArrayList<Member>();
 
 		/**
-		 * Populate Team of two unique members as team instance
+		 * Populate Team of teamSize unique members as team instance
 		 */
 		try {
 			members = loadMembers(filePath);
 
 			int teamIndex = 1;
 			Team currentTeam = new Team();
+
 			for (int i = 0; i < members.size(); i++) {
 
 				int teamCount = i % teamSize;
@@ -85,14 +85,23 @@ public class TeamGenerator {
 	}
 
 	/**
-	 * User passes in file path creates either csvDao or dbDao
+	 * @param path
 	 * 
 	 * @return {@link Collection}
-	 * @param path
+	 *
 	 * @throws Exception
 	 */
 	private List<Member> loadMembers(String arg1) throws Exception {
-		return DaoFactory.getDao(arg1).getUsers();
+
+		// TODO Put into unit test
+		// create an instance of the IDataLoader
+		daoLoader = DaoFactory.getDao(arg1);
+
+		daoLoader.getUsers();
+
+		daoLoader.addToDao("Mayra", "Mavarez");
+
+		return daoLoader.getUsers();
 	}
 
 	public static void main(String[] args) throws Exception {

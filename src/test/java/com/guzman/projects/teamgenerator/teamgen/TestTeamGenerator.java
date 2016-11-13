@@ -1,14 +1,8 @@
 package com.guzman.projects.teamgenerator.teamgen;
 
 import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
+import java.util.*;
 import org.junit.Test;
-
 import com.guzman.projects.teamgenerator.teamgen.dao.DaoFactory;
 
 /**

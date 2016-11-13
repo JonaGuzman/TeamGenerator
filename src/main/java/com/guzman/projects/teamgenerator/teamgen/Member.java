@@ -1,5 +1,9 @@
 package com.guzman.projects.teamgenerator.teamgen;
-
+/**
+ * 
+ * @author Jonathan Guzman
+ *
+ */
 public class Member {
 
 	private String firstName;
