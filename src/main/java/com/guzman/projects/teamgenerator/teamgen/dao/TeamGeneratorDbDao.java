@@ -25,7 +25,7 @@ public class TeamGeneratorDbDao implements IDataLoader {
 	 * 
 	 * Constructor initializes spreadbase to create H2 Db
 	 * 
-	 * @param xlsxFileName excel file path
+	 * @param xlsxFileName - excel file path
 	 * @throws Exception
 	 * 
 	 */

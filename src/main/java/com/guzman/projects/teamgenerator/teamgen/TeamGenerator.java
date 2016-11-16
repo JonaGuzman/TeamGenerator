@@ -11,13 +11,11 @@ import com.guzman.projects.teamgenerator.teamgen.dao.*;
  */
 public class TeamGenerator {
 
-	private IDataLoader daoLoader;
-
 	/**
 	 * The main business logic organizes teams from list of members
 	 * 
-	 * @param filePath path to csv or xlsx
-	 * @param teamSize size of the teams
+	 * @param filePath - path to csv or xlsx
+	 * @param teamSize - size of the teams
 	 * 
 	 * @return a non null Collection of teams
 	 */
@@ -85,23 +83,14 @@ public class TeamGenerator {
 	}
 
 	/**
-	 * @param path
+	 * @param path - from create teams method
 	 * 
-	 * @return {@link Collection}
+	 * @return {@link List}
 	 *
 	 * @throws Exception
 	 */
-	private List<Member> loadMembers(String arg1) throws Exception {
-
-		// TODO Put into unit test
-		// create an instance of the IDataLoader
-		daoLoader = DaoFactory.getDao(arg1);
-
-		daoLoader.getUsers();
-
-		daoLoader.addToDao("Mayra", "Mavarez");
-
-		return daoLoader.getUsers();
+	private List<Member> loadMembers(String path) throws Exception {
+		return DaoFactory.getDao(path).getUsers();
 	}
 
 	public static void main(String[] args) throws Exception {

@@ -16,7 +16,7 @@ public class DaoFactory {
 	/**
 	 * Implements interface to generate Data Objects
 	 * 
-	 * @param filePath
+	 * @param filePath - path to csv or xlsx
 	 * 
 	 * @return a csv or database Dao
 	 * 
