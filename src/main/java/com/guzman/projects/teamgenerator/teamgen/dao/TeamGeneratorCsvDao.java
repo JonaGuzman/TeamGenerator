@@ -12,6 +12,7 @@ import com.guzman.projects.teamgenerator.teamgen.Member;
 public class TeamGeneratorCsvDao implements IDataLoader {
 
 	String filePath;
+	String headerRow;
 
 	Member member;
 	List<Member> members;
@@ -30,13 +31,10 @@ public class TeamGeneratorCsvDao implements IDataLoader {
 
 		try (BufferedReader in = new BufferedReader(new FileReader(filePath))) {
 
-			int count = 0;
 			String name = null;
 
+			headerRow = in.readLine() + "\n";
 			while ((name = in.readLine()) != null) {
-
-				if (count++ == 0)
-					continue;
 
 				String[] temp = name.split(",");
 				if (name.contains(",")) {
@@ -46,7 +44,6 @@ public class TeamGeneratorCsvDao implements IDataLoader {
 				}
 
 				members.add(member);
-				count++;
 			}
 		}
 	}
@@ -63,14 +60,27 @@ public class TeamGeneratorCsvDao implements IDataLoader {
 
 	@Override
 	public void addToDao(String firstName, String lastName) throws Exception {
-		// TODO add to members list as well as csv file
 		members.add(new Member(firstName, lastName));
+		writeToCsv();
+	}
+	
+	private void writeToCsv() throws Exception {
+		new File("./target/csv").mkdir();
+		String outFW = "./target/csv" + filePath.substring(filePath.lastIndexOf('/'));
+
+		try (BufferedWriter out = new BufferedWriter(new FileWriter(outFW))) {
+			out.write(headerRow);
+			for (Member m : members) {
+				out.write(m.getFirstName() + "," + m.getLastName() + "\n");
+			}
+		}
 	}
 
 	@Override
 	public void deleteFromDao(String firstName, String lastName) throws Exception {
 		// TODO delete from members list as well as csv file
 		members.remove(new Member(firstName, firstName));
+		writeToCsv();
 	}
 
 	@Override
@@ -81,5 +91,7 @@ public class TeamGeneratorCsvDao implements IDataLoader {
 		
 		member = new Member(oldNameSplit[0], oldNameSplit[1]);
 		members.set(members.indexOf(member), new Member(newNameSplit[0], newNameSplit[1]));
+		
+		writeToCsv();
 	}
 }

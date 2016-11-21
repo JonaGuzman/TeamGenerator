@@ -43,6 +43,21 @@ public class TestTeamGenerator {
 		assertEquals(54, members.size());
 		assertEquals(members.get(52).toString(), "Mayra Mavarez");
 	}
+	/**
+	 * Test generation of updated csv
+	 */
+	@Test
+	public void testCsvAdd() throws Exception {
+		
+		dataLoader = DaoFactory.getDao("./src/main/resources/members.csv");
+		
+		members = dataLoader.getUsers();
+		
+		//Creates updated csv file
+		dataLoader.addToDao("Mayra", "Mavarez");
+		
+		assertEquals(members.get(52).toString(), "Mayra Mavarez");
+	}
 	
 	/**
 	 * Ensure each team has a unique members: members cannot have the same name
