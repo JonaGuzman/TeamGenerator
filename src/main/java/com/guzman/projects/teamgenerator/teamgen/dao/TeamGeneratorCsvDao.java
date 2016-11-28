@@ -78,8 +78,15 @@ public class TeamGeneratorCsvDao implements IDataLoader {
 
 	@Override
 	public void deleteFromDao(String firstName, String lastName) throws Exception {
-		// TODO delete from members list as well as csv file
-		members.remove(new Member(firstName, firstName));
+		
+		String name = String.format("%s %s", firstName, lastName);
+		
+		for(Member m : members) {
+			if(m.toString().equalsIgnoreCase(name)) {
+				members.remove(m);
+				break;
+			}		
+		}
 		writeToCsv();
 	}
 

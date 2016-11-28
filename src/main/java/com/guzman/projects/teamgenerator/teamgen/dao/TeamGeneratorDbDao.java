@@ -79,8 +79,10 @@ public class TeamGeneratorDbDao implements IDataLoader {
 	}
 
 	@Override
-	public void deleteFromDao(String firstName, String lastName) throws Exception {
+	public void deleteFromDao(String firstName, String lastName) throws Exception, SQLException {
 
+		String name = String.format("%s %s", firstName, lastName);
+		
 		Connection conn = null;
 
 		try {
@@ -90,18 +92,27 @@ public class TeamGeneratorDbDao implements IDataLoader {
 			Statement stmt = conn.createStatement();
 
 			String query = String.format(
-					"DELETE FROM members WHERE First__Name=%s" +
-					" AND Last_Name=%s", firstName, lastName);
+					"DELETE FROM members WHERE First__Name='%s'" +
+					" AND Last_Name='%s'", firstName, lastName);
 			
-			ResultSet rs = stmt.executeQuery(query);
-
-			members.remove(new Member(rs.getString(1), rs.getString(2)));
+			stmt.executeUpdate(query);
 			
+			// tried but no success with a stream
+			// resultList = members.stream()
+			// .filter(m -> !m.toString().equals(name))
+			// .collect(Collectors.toList());
+						
+			for(Member m : members) {
+				if(m.toString().equalsIgnoreCase(name)) {
+					members.remove(m);
+					break;
+				}		
+			}
 		} finally {
 			conn.close();
 		}
 	}
-
+	
 	@Override
 	public void updateDao(String oldName, String newName) throws Exception {
 

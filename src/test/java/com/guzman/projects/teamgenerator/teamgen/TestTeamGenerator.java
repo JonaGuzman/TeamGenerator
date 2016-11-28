@@ -43,6 +43,28 @@ public class TestTeamGenerator {
 		assertEquals(54, members.size());
 		assertEquals(members.get(52).toString(), "Mayra Mavarez");
 	}
+	
+	/**
+	 * Test delete from database
+	 */
+	@Test
+	public void testDbDelete() throws Exception {
+		
+		dataLoader = DaoFactory.getDao("./src/main/resources/members.xlsx");
+				
+		dataLoader.getUsers();
+		
+		dataLoader.deleteFromDao("carl", "johnson");
+		
+		members = dataLoader.getUsers();
+		
+		assertEquals(51, members.size());
+		
+		for (Member m : members) {
+			assertTrue(!m.toString().equalsIgnoreCase("carl johnson"));
+		}	
+	}
+	
 	/**
 	 * Test generation of updated csv
 	 */
@@ -57,6 +79,22 @@ public class TestTeamGenerator {
 		dataLoader.addToDao("Mayra", "Mavarez");
 		
 		assertEquals(members.get(52).toString(), "Mayra Mavarez");
+	}
+	
+	/**
+	 * Test delete from database
+	 */
+	@Test
+	public void testCsvDelete() throws Exception {
+		
+		dataLoader = DaoFactory.getDao("./src/main/resources/members.csv");
+				
+		members = dataLoader.getUsers();
+		
+		//Creates updated csv file
+		dataLoader.deleteFromDao("jen", "smith");
+		
+		assertEquals(51, members.size());
 	}
 	
 	/**
