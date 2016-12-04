@@ -10,7 +10,6 @@ import com.guzman.projects.teamgenerator.teamgen.dao.DaoFactory;
 
 public class TestTeamGeneratorDbDao extends TestTeamGenerator {
 
-	
 	@Before
 	public void setUp() {
 		// Created instance of IDataLoader to pass dao into
@@ -21,6 +20,7 @@ public class TestTeamGeneratorDbDao extends TestTeamGenerator {
 			e.printStackTrace();
 		}
 	}
+	
 	/**
 	 * Tests generation of H2 Db as well as add to the DB
 	 * @throws Exception
