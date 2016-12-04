@@ -63,7 +63,43 @@ public class TeamGeneratorCsvDao implements IDataLoader {
 		members.add(new Member(firstName, lastName));
 		writeToCsv();
 	}
-	
+
+	@Override
+	public void deleteFromDao(String firstName, String lastName) throws Exception {
+
+		String name = String.format("%s %s", firstName, lastName);
+
+		for (Member m : members) {
+			if (m.toString().equalsIgnoreCase(name)) {
+				members.remove(m);
+				break;
+			}
+		}
+
+		writeToCsv();
+	}
+
+	@Override
+	public void updateDao(String oldName, String newName) throws Exception {
+		String[] oldNameSplit = fixNameSplit(oldName).split("[\\s|,]");
+		String[] newNameSplit = fixNameSplit(newName).split("[\\s|,]");
+
+		member = new Member(newNameSplit[0], newNameSplit[1]);
+
+		String name = String.format("%s %s", 
+				oldNameSplit[0], 
+				oldNameSplit[1]);
+
+		for (Member m : members) {
+			if (m.toString().equals(name)) {
+				members.set(members.indexOf(m), member);
+				break;
+			}
+		}
+
+		writeToCsv();
+	}
+
 	private void writeToCsv() throws Exception {
 		new File("./target/csv").mkdir();
 		String outFW = "./target/csv" + filePath.substring(filePath.lastIndexOf('/'));
@@ -76,29 +112,13 @@ public class TeamGeneratorCsvDao implements IDataLoader {
 		}
 	}
 
-	@Override
-	public void deleteFromDao(String firstName, String lastName) throws Exception {
-		
-		String name = String.format("%s %s", firstName, lastName);
-		
-		for(Member m : members) {
-			if(m.toString().equalsIgnoreCase(name)) {
-				members.remove(m);
-				break;
-			}		
-		}
-		writeToCsv();
-	}
-
-	@Override
-	public void updateDao(String oldName, String newName) throws Exception {
-		// TODO updates members list as well as csv file
-		String[] oldNameSplit = oldName.split("[\\s|,]");
-		String[] newNameSplit = newName.split("[\\s|,]");
-		
-		member = new Member(oldNameSplit[0], oldNameSplit[1]);
-		members.set(members.indexOf(member), new Member(newNameSplit[0], newNameSplit[1]));
-		
-		writeToCsv();
+	private String fixNameSplit(String name) {
+		// corrects split for regex
+		// just a ',' or just a " "
+		if (name.contains(",") && name.contains(" ")) {
+			name = name.replace(" ", "");
+			return name;
+		} else
+			return name;
 	}
 }

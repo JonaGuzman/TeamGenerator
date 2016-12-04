@@ -116,31 +116,57 @@ public class TeamGeneratorDbDao implements IDataLoader {
 	@Override
 	public void updateDao(String oldName, String newName) throws Exception {
 
-		String[] oldNameSplit = oldName.split("[\\s|,]");
-		String[] newNameSplit = newName.split("[\\s|,]");
-		
+		String[] oldNameSplit = fixNameSplit(oldName).split("[,|\\s]");
+		String[] newNameSplit = fixNameSplit(newName).split("[,|\\s]");
+
+		member = new Member(newNameSplit[0], newNameSplit[1]);
+
 		Connection conn = null;
-		
+		Statement stmt = null;
+
 		try {
-			
+
 			conn = DriverManager.getConnection(String.format(CONNECTION_STR, dbPath), "sa", "");
-			
-			String updateStatment = String.format(
-					"UPDATE members SET First__Name=?,Last_Name=?" + 
-					" WHERE First__Name=%s OR Last_Name=%s",
+
+			String sql = String.format(
+					"UPDATE members SET First__Name = '%s', Last_Name = '%s'"
+							+ " WHERE First__Name = '%s' OR Last_Name = '%s'",
+					newNameSplit[0], newNameSplit[1],
 					oldNameSplit[0], oldNameSplit[1]);
-			
-			PreparedStatement prs = conn.prepareStatement(updateStatment);
-			
-			prs.setString(1, newNameSplit[0]);
-			prs.setString(2, newNameSplit[1]);
-			
-			member = new Member(oldNameSplit[0], oldNameSplit[1]);
-			
-			members.set(members.indexOf(member), new Member(newNameSplit[0], newNameSplit[1]));
-			
+
+			stmt = conn.createStatement();
+			stmt.executeUpdate(sql);
+
+			ResultSet rs = stmt.executeQuery("select * from members");
+
+			while (rs.next()) {
+
+				if (rs.getString(1).equals(member.getFirstName()) && rs.getString(2).equals(member.getLastName())) {
+
+					String name = rs.getString(1) + " " + rs.getString(2);
+
+					for (Member m : members) {
+						if (m.toString().equalsIgnoreCase(name)) {
+							members.set(members.indexOf(m), member);
+							break;
+						}
+					}
+				}
+			}
+
 		} finally {
 			conn.close();
 		}
+	}
+	
+	private String fixNameSplit(String name) {
+		// corrects split for regex
+		// just a ',' or just a " "
+		if(name.contains(",") && name.contains(" ")) {
+			name = name.replace(" ", "");
+			return name;
+		}
+		else
+			return name;
 	}
 }
