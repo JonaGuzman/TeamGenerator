@@ -20,18 +20,19 @@ public class TestTeamGenerator {
 	}
 
 	/**
-	 * Ensure each team has a unique members
-	 * members cannot have the same name
+	 * Ensure each team has a unique members members cannot have the same name
+	 * 
 	 * @throws Exception
 	 */
 	@Test
 	public void testUniqueTeamMembers() throws Exception {
 
 		for (Team t : team.createTeams("./src/main/resources/members.csv", 4)) {
-	
+
 			for (Member m : t) {
 				for (int i = t.size() - 1; i > t.indexOf(m); i--) {
-					assertNotEquals(t.indexOf(m), t.get(i));
+					assertNotEquals(t.get(t.indexOf(m)).toString(),
+									t.get(i).toString());
 				}
 			}
 		}
@@ -39,6 +40,7 @@ public class TestTeamGenerator {
 
 	/**
 	 * Test each entry in members file
+	 * 
 	 * @throws Exception
 	 */
 	@Test
@@ -49,15 +51,15 @@ public class TestTeamGenerator {
 				members.add(m);
 			}
 		}
-		
+
 		for (Member m : members) {
 			for (int i = members.size() - 1; i > members.indexOf(m); i--) {
-				assertNotEquals(members.indexOf(m), members.get(i));
+				assertNotEquals(members.get(members.indexOf(m)).toString(),
+											members.get(i).toString());
 			}
 		}
 	}
 
-	
 	/**
 	 * Test to sort on last name using comparator
 	 */
