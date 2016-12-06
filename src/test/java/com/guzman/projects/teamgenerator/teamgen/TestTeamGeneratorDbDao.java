@@ -8,6 +8,9 @@ import org.junit.Test;
 
 import com.guzman.projects.teamgenerator.teamgen.dao.DaoFactory;
 
+/**
+ * Unit test of Database Data Object
+ */
 public class TestTeamGeneratorDbDao extends TestTeamGenerator {
 
 	@Before

@@ -18,21 +18,46 @@ public class TestTeamGenerator {
 	public void Test() throws Exception {
 		assertEquals(26, team.createTeams("./src/main/resources/members.csv", 2).size());
 	}
-	
+
 	/**
-	 * Ensure each team has a unique members: members cannot have the same name
+	 * Ensure each team has a unique members
+	 * members cannot have the same name
 	 * @throws Exception
 	 */
 	@Test
-	public void testUniqueMembers() throws Exception {
+	public void testUniqueTeamMembers() throws Exception {
+
+		for (Team t : team.createTeams("./src/main/resources/members.csv", 4)) {
 	
-		//got indexoutOFBounds When TeamSize == 3
-		//is it just a bad unit test because its not an even split of members?
-		// TODO: write something to handle that
-		for (Team t : team.createTeams("./src/main/resources/members.csv",4))
-		assertNotEquals(t.get(0), t.get(1));
+			for (Member m : t) {
+				for (int i = t.size() - 1; i > t.indexOf(m); i--) {
+					assertNotEquals(t.indexOf(m), t.get(i));
+				}
+			}
+		}
 	}
 
+	/**
+	 * Test each entry in members file
+	 * @throws Exception
+	 */
+	@Test
+	public void testMembersFile() throws Exception {
+
+		for (Team t : team.createTeams("./src/main/resources/members.csv", 14)) {
+			for (Member m : t) {
+				members.add(m);
+			}
+		}
+		
+		for (Member m : members) {
+			for (int i = members.size() - 1; i > members.indexOf(m); i--) {
+				assertNotEquals(members.indexOf(m), members.get(i));
+			}
+		}
+	}
+
+	
 	/**
 	 * Test to sort on last name using comparator
 	 */

@@ -22,12 +22,11 @@ public class TeamGeneratorDbDao implements IDataLoader {
 	private final static String CONNECTION_STR = "jdbc:h2:%s;MV_STORE=FALSE;FILE_LOCK=NO";
 
 	/**
-	 * 
-	 * Constructor initializes spreadbase to create H2 Db
+	 * initializes spreadbase to create H2 Db
 	 * 
 	 * @param xlsxFileName - excel file path
-	 * @throws Exception
 	 * 
+	 * @throws Exception
 	 */
 	public TeamGeneratorDbDao(String xlsxFileName) throws Exception {
 		// why did this add an extra '_' to first name column,

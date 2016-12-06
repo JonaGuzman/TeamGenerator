@@ -8,6 +8,9 @@ import org.junit.Test;
 
 import com.guzman.projects.teamgenerator.teamgen.dao.DaoFactory;
 
+/**
+ * Unit test of CSV Data Object
+ */
 public class TestTeamGeneratorCsvDao extends TestTeamGenerator {
 
 	@Before
