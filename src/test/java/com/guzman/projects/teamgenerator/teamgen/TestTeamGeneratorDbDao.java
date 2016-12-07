@@ -31,8 +31,8 @@ public class TestTeamGeneratorDbDao extends TestTeamGenerator {
 	@Test
 	public void testDbAdd() throws Exception {
 		
-		dataLoader.addToDao("Mayra", "Mavarez");
-		dataLoader.addToDao("Rae", "Sremmund");
+		dataLoader.addMember("Mayra", "Mavarez");
+		dataLoader.addMember("Rae", "Sremmund");
 		
 		//need to reset the list to get changes
 		members = dataLoader.getUsers();
@@ -48,7 +48,7 @@ public class TestTeamGeneratorDbDao extends TestTeamGenerator {
 	@Test
 	public void testDbDelete() throws Exception {
 		
-		dataLoader.deleteFromDao("carl", "johnson");
+		dataLoader.deleteMember("carl", "johnson");
 		
 		members = dataLoader.getUsers();
 		
@@ -65,7 +65,7 @@ public class TestTeamGeneratorDbDao extends TestTeamGenerator {
 	@Test
 	public void testDbUpdate() throws Exception {
 								
-		dataLoader.updateDao("dave millers", "dave miller");
+		dataLoader.updateMember("dave millers", "dave miller");
 		
 		members = dataLoader.getUsers();
 		

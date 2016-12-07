@@ -57,7 +57,7 @@ public class TeamGeneratorDbDao implements IDataLoader {
 	}
 
 	@Override
-	public void addToDao(String firstName, String lastName) throws Exception {
+	public void addMember(String firstName, String lastName) throws Exception {
 
 		Connection conn = null;
 
@@ -69,8 +69,6 @@ public class TeamGeneratorDbDao implements IDataLoader {
 
 			String query = "INSERT INTO members (First__Name, Last_Name) VALUES ('%s', '%s')";
 			stmt.executeUpdate(String.format(query, firstName, lastName));
-
-			members.add(new Member(firstName, lastName));
 			
 		} finally {
 			conn.close();
@@ -78,9 +76,7 @@ public class TeamGeneratorDbDao implements IDataLoader {
 	}
 
 	@Override
-	public void deleteFromDao(String firstName, String lastName) throws Exception, SQLException {
-
-		String name = String.format("%s %s", firstName, lastName);
+	public void deleteMember(String firstName, String lastName) throws Exception, SQLException {
 		
 		Connection conn = null;
 
@@ -95,30 +91,17 @@ public class TeamGeneratorDbDao implements IDataLoader {
 					" AND Last_Name='%s'", firstName, lastName);
 			
 			stmt.executeUpdate(query);
-			
-			// tried but no success with a stream
-			// resultList = members.stream()
-			// .filter(m -> !m.toString().equals(name))
-			// .collect(Collectors.toList());
-						
-			for(Member m : members) {
-				if(m.toString().equalsIgnoreCase(name)) {
-					members.remove(m);
-					break;
-				}		
-			}
+
 		} finally {
 			conn.close();
 		}
 	}
 	
 	@Override
-	public void updateDao(String oldName, String newName) throws Exception {
+	public void updateMember(String oldName, String newName) throws Exception {
 
 		String[] oldNameSplit = fixNameSplit(oldName).split("[,|\\s]");
 		String[] newNameSplit = fixNameSplit(newName).split("[,|\\s]");
-
-		member = new Member(newNameSplit[0], newNameSplit[1]);
 
 		Connection conn = null;
 		Statement stmt = null;
@@ -135,23 +118,6 @@ public class TeamGeneratorDbDao implements IDataLoader {
 
 			stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
-
-			ResultSet rs = stmt.executeQuery("select * from members");
-
-			while (rs.next()) {
-
-				if (rs.getString(1).equals(member.getFirstName()) && rs.getString(2).equals(member.getLastName())) {
-
-					String name = rs.getString(1) + " " + rs.getString(2);
-
-					for (Member m : members) {
-						if (m.toString().equalsIgnoreCase(name)) {
-							members.set(members.indexOf(m), member);
-							break;
-						}
-					}
-				}
-			}
 
 		} finally {
 			conn.close();

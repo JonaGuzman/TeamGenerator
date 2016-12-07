@@ -59,13 +59,13 @@ public class TeamGeneratorCsvDao implements IDataLoader {
 	}
 
 	@Override
-	public void addToDao(String firstName, String lastName) throws Exception {
+	public void addMember(String firstName, String lastName) throws Exception {
 		members.add(new Member(firstName, lastName));
-		writeToCsv();
+		save();
 	}
 
 	@Override
-	public void deleteFromDao(String firstName, String lastName) throws Exception {
+	public void deleteMember(String firstName, String lastName) throws Exception {
 
 		String name = String.format("%s %s", firstName, lastName);
 
@@ -76,11 +76,11 @@ public class TeamGeneratorCsvDao implements IDataLoader {
 			}
 		}
 
-		writeToCsv();
+		save();
 	}
 
 	@Override
-	public void updateDao(String oldName, String newName) throws Exception {
+	public void updateMember(String oldName, String newName) throws Exception {
 		String[] oldNameSplit = fixNameSplit(oldName).split("[\\s|,]");
 		String[] newNameSplit = fixNameSplit(newName).split("[\\s|,]");
 
@@ -97,10 +97,10 @@ public class TeamGeneratorCsvDao implements IDataLoader {
 			}
 		}
 
-		writeToCsv();
+		save();
 	}
 
-	private void writeToCsv() throws Exception {
+	private void save() throws Exception {
 		new File("./target/csv").mkdir();
 		String outFW = "./target/csv" + filePath.substring(filePath.lastIndexOf('/'));
 

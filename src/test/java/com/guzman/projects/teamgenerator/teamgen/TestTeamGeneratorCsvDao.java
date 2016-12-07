@@ -32,7 +32,7 @@ public class TestTeamGeneratorCsvDao extends TestTeamGenerator {
 		members = dataLoader.getUsers();
 		
 		// Creates updated csv file
-		dataLoader.addToDao("Mayra", "Mavarez");
+		dataLoader.addMember("Mayra", "Mavarez");
 
 		assertEquals(members.get(52).toString(), "Mayra Mavarez");
 	}
@@ -46,7 +46,7 @@ public class TestTeamGeneratorCsvDao extends TestTeamGenerator {
 		members = dataLoader.getUsers();
 		
 		// Creates updated csv file
-		dataLoader.deleteFromDao("jen", "smith");
+		dataLoader.deleteMember("jen", "smith");
 
 		assertEquals(51, members.size());
 	}
@@ -60,7 +60,7 @@ public class TestTeamGeneratorCsvDao extends TestTeamGenerator {
 		members = dataLoader.getUsers();
 		
 		// Creates updated csv file
-		dataLoader.updateDao("dave, millers", "dave, miller");
+		dataLoader.updateMember("dave, millers", "dave, miller");
 
 		assertEquals(52, members.size());
 

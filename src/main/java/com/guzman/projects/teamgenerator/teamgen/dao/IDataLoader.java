@@ -26,7 +26,7 @@ public interface IDataLoader {
 	 * 
 	 * @throws Exception
 	 */
-	public void addToDao(String firstName, String lastName) throws Exception;
+	public void addMember(String firstName, String lastName) throws Exception;
 	
 	
 	/**
@@ -37,7 +37,7 @@ public interface IDataLoader {
 	 * 
 	 * @throws Exception
 	 */
-	public void deleteFromDao(String firstName, String lastName) throws Exception;
+	public void deleteMember(String firstName, String lastName) throws Exception;
 	
 	
 	/**
@@ -48,5 +48,5 @@ public interface IDataLoader {
 	 * 
 	 * @throws Exception
 	 */
-	public void updateDao(String oldName, String newName) throws Exception;
+	public void updateMember(String oldName, String newName) throws Exception;
 }
