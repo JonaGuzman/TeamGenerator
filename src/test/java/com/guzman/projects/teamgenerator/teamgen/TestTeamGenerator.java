@@ -67,8 +67,8 @@ public class TestTeamGenerator {
 	public void testLastNameSort() {
 		ArrayList<Member> team = new ArrayList<Member>();
 
-		Member m1 = new Member("Jak", "Mack");
-		Member m2 = new Member("Jak", "Guzman");
+		Member m1 = new Member(1, "Jak", "Mack");
+		Member m2 = new Member(2, "Jak", "Guzman");
 
 		team.add(m1);
 		team.add(m2);

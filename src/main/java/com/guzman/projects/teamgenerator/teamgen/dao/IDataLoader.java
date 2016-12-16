@@ -6,7 +6,6 @@ import com.guzman.projects.teamgenerator.teamgen.Member;
 /**
  * 
  * @author Jonathan Guzman
- * 
  */
 public interface IDataLoader {
 
@@ -26,7 +25,7 @@ public interface IDataLoader {
 	 * 
 	 * @throws Exception
 	 */
-	public void addMember(String firstName, String lastName) throws Exception;
+	public void addMember(Member m) throws Exception;
 	
 	
 	/**
@@ -37,7 +36,7 @@ public interface IDataLoader {
 	 * 
 	 * @throws Exception
 	 */
-	public void deleteMember(String firstName, String lastName) throws Exception;
+	public void deleteMember(Member m) throws Exception;
 	
 	
 	/**
@@ -48,5 +47,5 @@ public interface IDataLoader {
 	 * 
 	 * @throws Exception
 	 */
-	public void updateMember(String oldName, String newName) throws Exception;
+	public void updateMember(Member m) throws Exception;
 }

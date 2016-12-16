@@ -1,21 +1,19 @@
 package com.guzman.projects.teamgenerator.teamgen.dao;
 
-/**
- * 
- * @author Jonathan Guzman
- * 
- */
 import java.io.*;
 import java.util.*;
 import com.guzman.projects.teamgenerator.teamgen.Member;
 
+/**
+ * 
+ * @author Jonathan Guzman
+ */
 public class TeamGeneratorCsvDao implements IDataLoader {
 
-	String filePath;
-	String headerRow;
+	private String filePath;
+	private String headerRow;
 
-	Member member;
-	List<Member> members;
+	private List<Member> members;
 
 	public TeamGeneratorCsvDao(String csvFileName) {
 		filePath = csvFileName;
@@ -38,12 +36,21 @@ public class TeamGeneratorCsvDao implements IDataLoader {
 
 				String[] temp = name.split(",");
 				if (name.contains(",")) {
-					member = new Member(temp[0], temp[1]);
-				} else {
-					member = new Member(temp[0], "");
-				}
-
-				members.add(member);
+					members.add(new Member(
+							Integer.parseInt(temp[0]),
+							temp[1],
+							temp[2],
+							Integer.parseInt(temp[3])));
+				} 
+				
+				// TODO: replace with log handling
+				/*else {
+					members.add(new Member(
+							Integer.parseInt(temp[0]),
+							temp[1],
+							"",
+							Integer.parseInt(temp[3])));
+				}*/
 			}
 		}
 	}
@@ -59,44 +66,32 @@ public class TeamGeneratorCsvDao implements IDataLoader {
 	}
 
 	@Override
-	public void addMember(String firstName, String lastName) throws Exception {
-		members.add(new Member(firstName, lastName));
+	public void addMember(Member m) throws Exception {
+		members.add(m);
 		save();
 	}
 
 	@Override
-	public void deleteMember(String firstName, String lastName) throws Exception {
+	public void deleteMember(Member m) throws Exception {
 
-		String name = String.format("%s %s", firstName, lastName);
-
-		for (Member m : members) {
-			if (m.toString().equalsIgnoreCase(name)) {
-				members.remove(m);
+		for (Member mem : members) {
+			if (mem.getId() == m.getId()) {
+				members.remove(mem);
 				break;
 			}
 		}
-
+		
 		save();
 	}
 
 	@Override
-	public void updateMember(String oldName, String newName) throws Exception {
-		String[] oldNameSplit = fixNameSplit(oldName).split("[\\s|,]");
-		String[] newNameSplit = fixNameSplit(newName).split("[\\s|,]");
-
-		member = new Member(newNameSplit[0], newNameSplit[1]);
-
-		String name = String.format("%s %s", 
-				oldNameSplit[0], 
-				oldNameSplit[1]);
-
-		for (Member m : members) {
-			if (m.toString().equals(name)) {
-				members.set(members.indexOf(m), member);
-				break;
-			}
+	public void updateMember(Member m) throws Exception {
+		
+		for(Member member : members) {
+			if(member.getId() == m.getId())
+				member = m;
 		}
-
+		
 		save();
 	}
 
@@ -107,18 +102,19 @@ public class TeamGeneratorCsvDao implements IDataLoader {
 		try (BufferedWriter out = new BufferedWriter(new FileWriter(outFW))) {
 			out.write(headerRow);
 			for (Member m : members) {
-				out.write(m.getFirstName() + "," + m.getLastName() + "\n");
+				out.write(m.getId() + "," + m.getFirstName() + "," +
+							m.getLastName() + "," + m.getAge() + "\n");
 			}
 		}
 	}
 
-	private String fixNameSplit(String name) {
-		// corrects split for regex
-		// just a ',' or just a " "
-		if (name.contains(",") && name.contains(" ")) {
-			name = name.replace(" ", "");
-			return name;
-		} else
-			return name;
-	}
+//	private String fixNameSplit(String name) {
+//		// corrects split for regex
+//		// just a ',' or just a " "
+//		if (name.contains(",") && name.contains(" ")) {
+//			name = name.replace(" ", "");
+//			return name;
+//		} else
+//			return name;
+//	}
 }
