@@ -12,7 +12,7 @@ import com.guzman.projects.teamgenerator.teamgen.dao.DaoFactory;
  * Unit test of CSV Data Object
  */
 public class TestTeamGeneratorCsvDao extends TestTeamGenerator {
-
+	
 	@Before
 	public void setUp() {
 		// Created instance of IDataLoader to pass dao into
@@ -59,7 +59,7 @@ public class TestTeamGeneratorCsvDao extends TestTeamGenerator {
 	public void testCsvUpdate() throws Exception {
 
 		members = dataLoader.getUsers();
-		Member member = new Member(6, "dave", "miller", 13);
+		Member member = new Member(6, "dave", "miller", 15);
 		
 		// Creates updated csv file
 		dataLoader.updateMember(member);
@@ -67,7 +67,7 @@ public class TestTeamGeneratorCsvDao extends TestTeamGenerator {
 		assertEquals(52, members.size());
 
 		for (Member m : members) {
-			assertTrue(!m.toString().equalsIgnoreCase("dave millers"));
+			assertTrue(!m.toString().equalsIgnoreCase("dave millers 15"));
 		}
 	}
 }

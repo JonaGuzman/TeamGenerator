@@ -10,9 +10,9 @@ import com.flores.h2.spreadbase.*;
 import com.guzman.projects.teamgenerator.teamgen.Member;
 
 /**
+ * Database implementation of TeamGenerator
  * 
  * @author Jonathan Guzman 
- *
  */
 public class TeamGeneratorDbDao implements IDataLoader {
 
@@ -24,6 +24,7 @@ public class TeamGeneratorDbDao implements IDataLoader {
 	private final static String CONNECTION_STR = "jdbc:h2:%s;MV_STORE=FALSE;FILE_LOCK=NO";
 
 	private static final Logger logger = Logger.getLogger(TeamGeneratorDbDao.class.getName());
+	
 	/**
 	 * initializes spreadbase to create H2 Db
 	 * 

@@ -9,6 +9,7 @@ import com.guzman.projects.teamgenerator.teamgen.Member;
 import com.guzman.projects.teamgenerator.teamgen.TeamGenerator;
 
 /**
+ * Csv implementation of TeamGenerator
  * 
  * @author Jonathan Guzman
  */
@@ -60,7 +61,7 @@ public class TeamGeneratorCsvDao implements IDataLoader {
 		try {
 			readCsvFile();
 		} catch (Exception e) {
-			logger.error("error when returning users\n" + e.getStackTrace(), e);
+			Logger.getLogger(TeamGenerator.class.getName()).error("error when returning users\n" + e.getStackTrace(), e);
 		}
 		return members;
 	}
@@ -74,28 +75,29 @@ public class TeamGeneratorCsvDao implements IDataLoader {
 
 	@Override
 	public void deleteMember(Member m) throws Exception {
-
-		for (Member mem : members) {
-			if (mem.getId() == m.getId()) {
-				members.remove(mem);
-				break;
-			}
-		}
+		members.remove(m.getId());
 		
 		save();
 	}
 
 	@Override
 	public void updateMember(Member m) throws Exception {
-		
 		for(Member member : members) {
-			if(member.getId() == m.getId())
-				member = m;
+			if(member.getId() == m.getId()) {
+				members.set(members.indexOf(member), m);
+				break;
+			}
+				
 		}
 		
 		save();
 	}
 
+	/**
+	 * Method that saves the file to target/csv directory
+	 * 
+	 * @throws Exception
+	 */
 	private void save() throws Exception {
 		new File("./target/csv").mkdir();
 		String outFW = "./target/csv" + filePath.substring(filePath.lastIndexOf('/'));
@@ -103,8 +105,7 @@ public class TeamGeneratorCsvDao implements IDataLoader {
 		try (BufferedWriter out = new BufferedWriter(new FileWriter(outFW))) {
 			out.write(headerRow);
 			for (Member m : members) {
-				out.write(m.getId() + "," + m.getFirstName() + "," +
-							m.getLastName() + "," + m.getAge() + "\n");
+				out.write(m.getId() + "," + m.toString().replaceAll(" ", ",") + "\n");
 			}
 		}
 	}
