@@ -2,6 +2,8 @@ package com.guzman.projects.teamgenerator.teamgen;
 
 import static org.junit.Assert.*;
 import java.util.*;
+
+import org.apache.log4j.Logger;
 import org.junit.Test;
 import com.guzman.projects.teamgenerator.teamgen.dao.IDataLoader;
 
@@ -14,6 +16,8 @@ public class TestTeamGenerator {
 	IDataLoader dataLoader;
 	List<Member> members = new ArrayList<Member>();
 
+	public static final Logger logger = Logger.getLogger(TestTeamGenerator.class.getName());
+	
 	@Test
 	public void Test() throws Exception {
 		assertEquals(26, team.createTeams("./src/main/resources/members.csv", 2).size());

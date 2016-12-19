@@ -4,26 +4,30 @@ import java.io.File;
 import java.sql.*;
 import java.util.*;
 
+import org.apache.log4j.Logger;
+
 import com.flores.h2.spreadbase.*;
 import com.guzman.projects.teamgenerator.teamgen.Member;
 
 /**
  * 
- * @author Jonathan Guzman TODO: implement logging TODO: use prepared statements
- *         TODO: update update method
+ * @author Jonathan Guzman 
+ *
  */
 public class TeamGeneratorDbDao implements IDataLoader {
 
-	File file;
-	String dbPath;
+	private String dbPath;
+	
+	private String query;
+	private PreparedStatement preStmt;
 
 	private final static String CONNECTION_STR = "jdbc:h2:%s;MV_STORE=FALSE;FILE_LOCK=NO";
 
+	private static final Logger logger = Logger.getLogger(TeamGeneratorDbDao.class.getName());
 	/**
 	 * initializes spreadbase to create H2 Db
 	 * 
-	 * @param xlsxFileName
-	 *            - excel file path
+	 * @param xlsxFileName - excel file path
 	 * 
 	 * @throws Exception
 	 */
@@ -38,17 +42,17 @@ public class TeamGeneratorDbDao implements IDataLoader {
 
 		try (Connection conn = getConnection()) {
 
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("select * from members");
+			preStmt = conn.prepareStatement("select * from members");
+			ResultSet rs = preStmt.executeQuery();
 
 			while (rs.next()) {
 				members.add(new Member(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4)));
 			}
 
 		} catch (Exception e) {
-			// TODO: add logging, say something bad happen contact
-			e.printStackTrace();
+			logger.error("error when returning users:\n" + e.getStackTrace(), e);
 		}
+		
 		return members;
 	}
 
@@ -57,11 +61,14 @@ public class TeamGeneratorDbDao implements IDataLoader {
 
 		try (Connection conn = getConnection()) {
 
-			Statement stmt = conn.createStatement();
-			String query = "INSERT INTO members (id, First_Name, Last_Name, age)" + 
-							" VALUES ('%d', '%s', '%s', '%d')";
-			stmt.executeUpdate(String.format(query, m.getId(), m.getFirstName(),
-								m.getLastName(), m.getAge()));
+			query = "INSERT INTO members (id, First_Name, Last_Name, age)" +
+					" VALUES (?,?,?,?)";
+			preStmt = conn.prepareStatement(query);
+			preStmt.setInt(1, m.getId());
+			preStmt.setString(2, m.getFirstName());
+			preStmt.setString(3, m.getLastName());
+			preStmt.setInt(4, m.getAge());
+			executeAndCommit(conn);
 		}
 	}
 
@@ -70,11 +77,10 @@ public class TeamGeneratorDbDao implements IDataLoader {
 
 		try (Connection conn = getConnection()) {
 
-			Statement stmt = conn.createStatement();
-
-			String query = String.format("DELETE FROM members WHERE id='%d'", m.getId());
-
-			stmt.executeUpdate(query);
+			query = String.format("DELETE FROM members WHERE id = ?", m.getId());
+			preStmt = conn.prepareStatement(query);	
+			preStmt.setInt(1, m.getId());
+			executeAndCommit(conn);
 		}
 	}
 
@@ -83,26 +89,23 @@ public class TeamGeneratorDbDao implements IDataLoader {
 
 		try (Connection conn = getConnection()) {
 
-			 String sql = String.format(
-			 "UPDATE members SET First_Name = '%s',"
-			+ " Last_Name = '%s', age = '%d'" + " WHERE id = '%d'",
-			m.getFirstName(), m.getLastName(), m.getAge(), m.getId());
-			 Statement stmt = conn.createStatement();
-			 stmt.executeUpdate(sql);
+			query = String.format("UPDATE members " + "SET First_Name = ?," +
+									" Last_Name = ?, age = ?" + " WHERE id = ?");
+			preStmt = conn.prepareStatement(query);
+			preStmt.setString(1, m.getFirstName());
+			preStmt.setString(2, m.getLastName());
+			preStmt.setInt(3, m.getAge());
+			preStmt.setInt(4, m.getId());
+			executeAndCommit(conn);
 		}
 	}
 
-	// private String fixNameSplit(String name) {
-	// // corrects split for regex
-	// // just a ',' or just a " "
-	// if (name.contains(",") && name.contains(" ")) {
-	// name = name.replace(" ", "");
-	// return name;
-	// } else
-	// return name;
-	// }
-
 	private Connection getConnection() throws SQLException {
 		return DriverManager.getConnection(String.format(CONNECTION_STR, dbPath), "sa", "");
+	}
+	
+	private void executeAndCommit (Connection conn) throws Exception {
+		preStmt.executeUpdate();
+		conn.commit();
 	}
 }

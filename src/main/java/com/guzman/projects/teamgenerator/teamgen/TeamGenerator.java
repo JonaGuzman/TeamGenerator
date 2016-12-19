@@ -11,6 +11,8 @@ import com.guzman.projects.teamgenerator.teamgen.dao.*;
  */
 public class TeamGenerator {
 
+	
+	private static final Logger logger = Logger.getLogger(TeamGenerator.class.getName());
 	/**
 	 * The main business logic organizes teams from list of members
 	 * 
@@ -94,7 +96,6 @@ public class TeamGenerator {
 	}
 
 	public static void main(String[] args) throws Exception {
-		Logger logger = Logger.getLogger(TeamGenerator.class.getName());
 
 		List<Team> listOfTeams = new ArrayList<Team>();
 

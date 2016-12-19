@@ -19,7 +19,7 @@ public class TestTeamGeneratorCsvDao extends TestTeamGenerator {
 		try {
 			dataLoader = DaoFactory.getDao("./src/main/resources/members.csv");
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 	}
 	
@@ -45,6 +45,7 @@ public class TestTeamGeneratorCsvDao extends TestTeamGenerator {
 		
 		members = dataLoader.getUsers();
 		Member member = new Member(1, "jen", "smith", 2);
+		
 		// Creates updated csv file
 		dataLoader.deleteMember(member);
 
@@ -58,15 +59,15 @@ public class TestTeamGeneratorCsvDao extends TestTeamGenerator {
 	public void testCsvUpdate() throws Exception {
 
 		members = dataLoader.getUsers();
-		Member member = new Member(1, "jen", "smith", 2);
+		Member member = new Member(6, "dave", "miller", 13);
 		
 		// Creates updated csv file
-//		dataLoader.updateMember("dave, millers", "dave, miller");
+		dataLoader.updateMember(member);
 
-//		assertEquals(52, members.size());
+		assertEquals(52, members.size());
 
 		for (Member m : members) {
-//			assertTrue(!m.toString().equalsIgnoreCase("dave millers"));
+			assertTrue(!m.toString().equalsIgnoreCase("dave millers"));
 		}
 	}
 }

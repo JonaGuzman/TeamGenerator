@@ -2,7 +2,11 @@ package com.guzman.projects.teamgenerator.teamgen.dao;
 
 import java.io.*;
 import java.util.*;
+
+import org.apache.log4j.Logger;
+
 import com.guzman.projects.teamgenerator.teamgen.Member;
+import com.guzman.projects.teamgenerator.teamgen.TeamGenerator;
 
 /**
  * 
@@ -14,6 +18,8 @@ public class TeamGeneratorCsvDao implements IDataLoader {
 	private String headerRow;
 
 	private List<Member> members;
+	
+	private static final Logger logger = Logger.getLogger(TeamGeneratorCsvDao.class.getName());
 
 	public TeamGeneratorCsvDao(String csvFileName) {
 		filePath = csvFileName;
@@ -42,15 +48,9 @@ public class TeamGeneratorCsvDao implements IDataLoader {
 							temp[2],
 							Integer.parseInt(temp[3])));
 				} 
-				
-				// TODO: replace with log handling
-				/*else {
-					members.add(new Member(
-							Integer.parseInt(temp[0]),
-							temp[1],
-							"",
-							Integer.parseInt(temp[3])));
-				}*/
+				else {
+					logger.error("invalid entry");
+				}
 			}
 		}
 	}
@@ -60,7 +60,7 @@ public class TeamGeneratorCsvDao implements IDataLoader {
 		try {
 			readCsvFile();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("error when returning users\n" + e.getStackTrace(), e);
 		}
 		return members;
 	}
@@ -68,6 +68,7 @@ public class TeamGeneratorCsvDao implements IDataLoader {
 	@Override
 	public void addMember(Member m) throws Exception {
 		members.add(m);
+		
 		save();
 	}
 
@@ -107,14 +108,4 @@ public class TeamGeneratorCsvDao implements IDataLoader {
 			}
 		}
 	}
-
-//	private String fixNameSplit(String name) {
-//		// corrects split for regex
-//		// just a ',' or just a " "
-//		if (name.contains(",") && name.contains(" ")) {
-//			name = name.replace(" ", "");
-//			return name;
-//		} else
-//			return name;
-//	}
 }

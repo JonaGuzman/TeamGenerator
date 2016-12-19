@@ -20,7 +20,7 @@ public class TestTeamGeneratorDbDao extends TestTeamGenerator {
 			dataLoader = DaoFactory.getDao("./src/main/resources/members.xlsx");
 			dataLoader.getUsers();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 	}
 	
