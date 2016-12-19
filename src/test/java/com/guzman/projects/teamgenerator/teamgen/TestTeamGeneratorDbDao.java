@@ -64,15 +64,17 @@ public class TestTeamGeneratorDbDao extends TestTeamGenerator {
 	 */
 	@Test
 	public void testDbUpdate() throws Exception {
-								
-//		dataLoader.updateMember("dave millers", "dave miller");
+					
+		Member member = new Member(19, "doug", "thompson", 30);
+		
+		dataLoader.updateMember(member);
 		
 		members = dataLoader.getUsers();
 		
 		assertEquals(52, members.size());
 		
 		for (Member m : members) {
-//			assertTrue(!m.toString().equalsIgnoreCase("dave millers"));
+			assertTrue(!m.toString().equalsIgnoreCase("doug thompson 6"));
 		}	
 	}
 }
