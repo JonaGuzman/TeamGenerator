@@ -35,7 +35,7 @@ public class Member {
 	}
 
 	public void setLastName(String lastName) {
-			this.lastName = lastName;
+		this.lastName = lastName;
 	}
 	
 	public int getAge() {
