@@ -13,7 +13,7 @@ import com.guzman.projects.teamgenerator.teamgen.TeamGenerator;
  * 
  * @author Jonathan Guzman
  */
-public class TeamGeneratorCsvDao implements IDataLoader {
+public class TeamGeneratorCsvDao implements IDataLoaderCsv {
 
 	private String filePath;
 	private String headerRow;
@@ -69,28 +69,21 @@ public class TeamGeneratorCsvDao implements IDataLoader {
 	@Override
 	public void addMember(Member m) throws Exception {
 		members.add(m);
-		
-		save();
 	}
 
 	@Override
 	public void deleteMember(Member m) throws Exception {
 		members.remove(m.getId());
-		
-		save();
 	}
 
 	@Override
 	public void updateMember(Member m) throws Exception {
-		for(Member member : members) {
-			if(member.getId() == m.getId()) {
+		for (Member member : members) {
+			if (member.getId() == m.getId()) {
 				members.set(members.indexOf(member), m);
 				break;
 			}
-				
 		}
-		
-		save();
 	}
 
 	/**
@@ -98,7 +91,7 @@ public class TeamGeneratorCsvDao implements IDataLoader {
 	 * 
 	 * @throws Exception
 	 */
-	private void save() throws Exception {
+	public void save() throws Exception {
 		new File("./target/csv").mkdir();
 		String outFW = "./target/csv" + filePath.substring(filePath.lastIndexOf('/'));
 

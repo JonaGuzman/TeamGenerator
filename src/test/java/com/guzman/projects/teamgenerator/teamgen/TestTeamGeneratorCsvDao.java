@@ -3,16 +3,17 @@ package com.guzman.projects.teamgenerator.teamgen;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import com.guzman.projects.teamgenerator.teamgen.dao.DaoFactory;
+import com.guzman.projects.teamgenerator.teamgen.dao.*;
 
 /**
  * Unit test of CSV Data Object
  */
 public class TestTeamGeneratorCsvDao extends TestTeamGenerator {
-	
 	@Before
 	public void setUp() {
 		// Created instance of IDataLoader to pass dao into
@@ -69,5 +70,25 @@ public class TestTeamGeneratorCsvDao extends TestTeamGenerator {
 		for (Member m : members) {
 			assertTrue(!m.toString().equalsIgnoreCase("dave millers 15"));
 		}
+	}
+	
+	/**
+	 * Test save functionality
+	 */
+	@Test
+	public void testSave() throws Exception {
+		// Cast on IDataLoader object to use child interface
+		IDataLoaderCsv dataLoaderCsv = (IDataLoaderCsv) DaoFactory.
+						getDao("./src/main/resources/members.csv");
+
+		members = dataLoaderCsv.getUsers();
+		dataLoaderCsv.addMember(new Member(53, "Jordy", "Nelson", 30));
+
+		assertEquals(members.get(52).toString(), "Jordy Nelson 30");
+		
+		// Saves members.csv to /target/csv/
+		dataLoaderCsv.save();
+		
+		assertTrue(new File("./target/csv/members.csv").exists());
 	}
 }
